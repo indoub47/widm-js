@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.4.0.css">
+  <style>
+  table, tr, td {border-collapse: collapse; border-style: solid;}
+  td {text-align: center; padding: 0.25em;}
+  thead td {background-color: rgb(214, 214, 214); font-weight: bolder; font-size: 85%}
+  .errors td {background-color: rgb(231, 171, 162)}
+  .warning td {background-color: rgb(253, 253, 112)}
+  .noflaws td {background-color: rgb(141, 219, 141)}
+  </style>   
+</head>
+<html>
+<body>
+    <textarea id="myInput" oninput="onInputHandler(this.id)" onfocus="onFocusHandler(this.id)"></textarea>
+    <form>  
+    <input id="submit-button" type="submit" value="Submit" disabled></form>  
+    <div id="input-records"></div>
+
+    <!-- handlebars template -->
+    <script id="table-template" type="text/x-handlebars-template">  
+        <table id="mytable">
+            <thead>
+                <tr>
+                    <td class="id">ID</td>
+                    <td class="linija">LINIJA</td>
+                    <td class="kelias">KELIAS</td>
+                    <td class="km">KM</td>
+                    <td class="pk">PK</td>
+                    <td class="m">M</td>
+                    <td class="siule">SIŪLĖ</td>
+                    <td class="skodas">SĄLYGINIS<br>KODAS</td>
+                    <td class="suvirino">KAS<br>SUVIRINO</td>
+                    <td class="operatorius">OPERATORIUS</td>
+                    <td class="aparatas">DEFEKTOSKOPAS</td>
+                    <td class="tdata">TIKRINIMO<br>DATA</td>
+                    <td class="kelintas">KELINTAS<br>TIKRINIMAS</td>
+                    <td class="klaidos">TRŪKUMAI</td>
+                </tr>
+            </thead>
+            <tbody>                
+                {{#each this}}
+                <tr {{class_by_flaws flaws}}>
+                    <td class="id">{{insp.id}}</td>
+                    <td class="linija">{{insp.linija}}</td>
+                    <td class="kelias">{{insp.kelias}}</td>
+                    <td class="km">{{insp.km}}</td>
+                    <td class="pk">{{insp.pk}}</td>
+                    <td class="m">{{insp.m}}</td>
+                    <td class="siule">{{insp.siule}}</td>
+                    <td class="skodas">{{insp.skodas}}</td>
+                    <td class="suvirino">{{insp.suvirino}}</td>
+                    <td class="operatorius">{{insp.operatorius}}</td>
+                    <td class="aparatas">{{insp.aparatas}}</td>
+                    <td class="tdata">{{insp.tdata}}</td>
+                    <td class="kelintas">{{insp.kelintas}}</td>
+                    <td class="klaidos">{{joined flaws}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </script>
+    
+    
+    <!-- testing infrastructure -->
+    <!--
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script src="https://code.jquery.com/qunit/qunit-2.4.0.js"></script>
+    <script src="tests.js"></script>
+    -->
+    <!-- end of testing infrastructure -->
+    
+    <!-- libraries -->
+    <script src="libraries/handlebars-v4.0.10.js"></script>
+    <!-- end of libraries -->
+    
+    <!-- my scripts -->
+    <script src="handlers.js"></script>
+    <script src="stuff.js"></script>
+    <script src="class_processor.js"></script>
+    <script src="class_insp.js"></script>
+    <script src="class_validated_insp.js"></script>
+    <script src="class_flaw.js"></script>
+    <script src="class_single_insp_validator.js"></script>
+    <script src="class_batch_validator.js"></script>
+    <script src="validators.js"></script>
+    <script src="mapping.js"></script>
+    <script src="class_data_text_parser.js"></script>
+    <!-- end of my scripts -->
+</body>
+</html>
