@@ -1,26 +1,34 @@
 <!DOCTYPE html>
+<html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.4.0.css">
   <style>
-  table, tr, td {border-collapse: collapse; border-style: solid;}
+  table, tr, td {border-collapse: collapse; border-style: solid; border-color:rgba(240, 255, 255, 0.486)}
   td {text-align: center; padding: 0.25em;}
   thead td {background-color: rgb(214, 214, 214); font-weight: bolder; font-size: 85%}
   .errors td {background-color: rgb(231, 171, 162)}
   .warning td {background-color: rgb(253, 253, 112)}
   .noflaws td {background-color: rgb(141, 219, 141)}
+  #server-response {padding: .5em; font-weight: bold; color: rgb(255, 255, 0)}
+  .response-200 {background-color: rgb(10, 163, 10)}
+  .response-400, .response-500 {background-color: rgb(201, 29, 29)}
+  .response-unknown {background-color: blue}
+  #submit-button {border: 1px solid #0066cc; background-color: #0099cc; color: #ffffff; padding: 5px 10px;}
+  #submit-button:hover {border: 1px solid #0099cc; background-color: #00aacc; color: #ffffff; padding: 5px 10px;}
+  #submit-button:disabled, #submit-button[disabled] {border: 1px solid #999999; background-color: #cccccc; color: #666666;}
   </style>   
 </head>
-<html>
 <body>
     <textarea id="myInput" oninput="onInputHandler(this.id)" onfocus="onFocusHandler(this.id)"></textarea>
     <form>  
     <input id="submit-button" type="submit" value="Submit" disabled></form>  
+    <div id="server-response-container"></div>
     <div id="input-records"></div>
 
     <!-- handlebars template -->
-    <script id="table-template" type="text/x-handlebars-template">  
+    <script id="table-template" type="text/x-handlebars-template">
         <table id="mytable">
             <thead>
                 <tr>

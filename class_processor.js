@@ -2,7 +2,9 @@ class Processor {
     
     run(input) {
         const rowLength = 13
-        
+        var submitButton = document.getElementById("submit-button")         
+        var resp = document.getElementById("server-response-container") 
+        submitButton.disabled = true    
         // 1. nuskaito kaip masyvą
         // 2. išmeta tuščias eilutes, sutrumpina iki nustatyto ilgio
         var dtParser = new DataTextParser(rowLength)
@@ -19,41 +21,32 @@ class Processor {
         var batchValidator = new BatchValidator(inspValidator)
         var validatedInsps = batchValidator.validate(insps)
         console.log("validatedInsps", validatedInsps)
-
         
         // 5. gamina eilutes        
-        var source   = document.getElementById("table-template").innerHTML;
-        //console.log("template", source)
-        var template = Handlebars.compile(source);
-        //console.log("compiled template", template)
+        var source   = document.getElementById("table-template").innerHTML
+        var template = Handlebars.compile(source)
         var html = template(validatedInsps)
-        //console.log("html", html)
         document.getElementById("input-records").innerHTML = html;
-
-        var submitButton = document.getElementById("submit-button");
+        
+        // validatina, ar galima submittinti
         var canSubmit = validatedInsps.every(vi => vi.flaws.length === 0 || (vi.flaws.length === 1 && vi.flaws[0].methodId === "validateForVkRepeats"))
         console.log("canSubmit", canSubmit)
-        if (canSubmit) {          
-          document.getElementById("submit-button").addEventListener("click", function(evt) {            
-              evt.preventDefault();
-              var xhr = new XMLHttpRequest();
-              xhr.open('POST', 'operator.php', true);
-              xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-              xhr.onload = function() {
-                  console.log(this.responseText);
-              }
-              var recs = "records=" + JSON.stringify(insps);
-              xhr.send(recs);            
-          });
+
+        // jeigu galima submittinti - prie submit button pririšama ajax užklausa       
+        if (canSubmit) {
+          submitButton.disabled = false          
+          submitButton.addEventListener("click", onSubmitHandler.bind(this, submitButton, resp, insps));
         }
-        submitButton.disabled = !canSubmit;
-    }    
+    } 
+    
+    
 }
     
 Handlebars.registerHelper('joined', function(items, options) {
   var joined = items.map(f => f.message).join("<br>")
   return new Handlebars.SafeString(joined);
 })
+
 
 
     
